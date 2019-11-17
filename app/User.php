@@ -33,7 +33,19 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $casts = [
+    public function profil(){
+
+        return $this->hasOne('App\Profil');
+
+    }
+
+    public function iklan(){
+
+        return $this->hasMany('App\Iklan');
+
+    }
+    
+     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
 }
