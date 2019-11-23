@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
-use App\User;
 
 class IklanSeeder extends Seeder
 {
@@ -13,7 +12,6 @@ class IklanSeeder extends Seeder
      */
     public function run()
     {
-        //$pemilik = User::all();
         $kategori = ['Kendaraan', 'Elektronik', 'Alat Pesta'];
         $status = ['Tersedia', 'Disewa'];
         $faker = Faker::create('id_ID');

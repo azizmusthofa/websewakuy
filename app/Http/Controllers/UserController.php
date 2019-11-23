@@ -5,17 +5,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\User;
 use App\Profil;
-use DB;
+use App\PelaporanUser;
 
 class UserController extends Controller
 {
     
     public function profilSaya()
     {
-        $id = Auth::id();
-        $user = User::find($id);
+        $myId = Auth::id();
+        $user = User::find($myId);
 
-        return view('user.registered.profil_saya', compact('user'));
+        return view('user.registered.profil_user', compact('user', 'myId'));
     }
 
 
@@ -25,16 +25,32 @@ class UserController extends Controller
         return view('user.registered.profil_user', compact('user'));
     }
 
+    public static function dataUser($id)
+    {
+        $user = User::find($id);
+        return $user;
+    }
+
+    public static function dataProfil($id)
+    {
+        $profil = Profil::find($id);
+        return $profil;
+    }
+
     public static function namaUser($id)
     {
         $user = User::find($id);
         return $user->name;
     }
+    public static function kotaUser($id)
+    {
+        $user = Profil::find($id);
+        return $user->kota;
+    }
 
     public function editProfil($id)
     {
         $user = User::find($id);
-
         return view('user.registered.edit_profil', compact('user'));
     }
 
@@ -68,5 +84,28 @@ class UserController extends Controller
             ]);
         }
         return redirect('/profil/saya');    
+    }
+
+    public function laporkanUser($id)
+    {
+        $user = User::find($id);
+        return view('user.registered.laporkan_user', compact('user'));
+    }
+
+    public function prosesLaporkanUser(Request $request)
+    {
+        $id = Auth::id();
+        $alasan="";
+        foreach($request->alasan as $al){
+            $alasan = $alasan.$al.',';
+        } 
+        $lapor = PelaporanUser::create([
+            'user_id' => $request->user_id,
+            'pelapor_id' => $id,
+            'alasan' => $alasan,
+            'keterangan' => $request->keterangan,
+        ]);
+        $user = User::find($request->user_id);
+        return view('user.registered.invoice_pelaporan_user', compact('lapor', 'user'));
     }
 }

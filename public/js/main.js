@@ -126,20 +126,20 @@
   var slider = document.getElementById('price-slider');
   if (slider) {
     noUiSlider.create(slider, {
-      start: [1, 999],
+      start: [10000, 100000],
       connect: true,
       tooltips: [true, true],
       format: {
         to: function(value) {
-          return value.toFixed(2) + '$';
+          return 'Rp' + value.toFixed(2);
         },
         from: function(value) {
           return value
         }
       },
       range: {
-        'min': 1,
-        'max': 999
+        'min': 10000,
+        'max': 200000
       }
     });
   }

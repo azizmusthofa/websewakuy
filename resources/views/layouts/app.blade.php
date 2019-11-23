@@ -1,3 +1,9 @@
+@php 
+use \App\Http\Controllers\IklanController;
+use Illuminate\Support\Facades\Auth;
+use App\Notifikasi;
+$notif = Notifikasi::where('user_id', Auth::id())->get();
+@endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -5,8 +11,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+	<!-- CSRF Token -->
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
 	<title>@yield('title')</title>
@@ -25,7 +31,7 @@
 	<link type="text/css" rel="stylesheet" href="{{ asset('css/nouislider.min.css') }}" />
 
 	<!-- Font Awesome Icon -->
-	<link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}"/>
+	<link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" />
 
 	<!-- Custom stlylesheet -->
 	<link type="text/css" rel="stylesheet" href="{{ asset('css/style.css') }}" />
@@ -33,6 +39,7 @@
 
 </head>
 @guest
+
 <body>
 	<!-- HEADER -->
 	<header>
@@ -42,240 +49,78 @@
 				<div class="pull-left">
 					<!-- Logo -->
 					<div class="header-logo">
-						<a class="logo" href="/beranda">
+						<a class="logo">
 							<img src="{{ asset('img/logo.png') }}" alt="">
 						</a>
 					</div>
-                    <!-- /Logo -->
-                    <!-- Search -->
-					<div class="header-search">
-						<form>
-							<input class="input search-input" type="text" placeholder="Sewa barang yuk...">
-							<select class="input search-categories" style="width: 155px;">
-								<option value="0">Semua Kategori</option>
-								<option value="1">Kendaraan</option>
-								<option value="2">Elektronik</option>
-								<option value="3">Alat Pesta</option>
-							</select>
-							<button class="search-btn"><i class="fa fa-search"></i></button>
-						</form>
-					</div>
-					<!-- /Search -->
+					<!-- /Logo -->
 				</div>
 				<div class="pull-right">
 					<ul class="header-btns">
 
-                        <!-- Login -->
+						<!-- Login -->
 						<li class="header-account dropdown default-dropdown">
 							<a href="{{ route('login') }}">
 								<strong class="text-uppercase">Login</strong>
-							</a>	
+							</a>
 						</li>
 						<!-- /Login -->
-                        @if (Route::has('register'))
+						@if (Route::has('register'))
 						<!-- Register -->
 						<li class="header-account dropdown default-dropdown">
 							<a href="{{ route('register') }}">
-								<strong class="text-uppercase">Daftar</strong>		
+								<strong class="text-uppercase">Daftar</strong>
 							</a>
 						</li>
-                        <!-- /Register -->
-                        @endif
+						<!-- /Register -->
+						@endif
 
 					</ul>
 				</div>
 			</div>
 			<!-- header -->
 		</div>
+		<hr>
 		<!-- container -->
 	</header>
 	<!-- /HEADER -->
-		<!-- NAVIGATION -->
-		<div id="navigation">
-		<!-- container -->
-		<div class="container">
-			<div id="responsive-nav">
-				<!-- category nav -->
-				<div class="category-nav show-on-click">
-					<span class="category-header">Kategori <i class="fa fa-list"></i></span>
-					<ul class="category-list">
-					<li class="dropdown side-dropdown">
-							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Kendaraan <i class="fa fa-angle-right"></i></a>
-							<div class="custom-menu" style ="width: 200px;">
-								<div class="row">
-									<div class="col-md-4" style ="width: 200px;">
-										<ul class="list-links" >
-											<li><a href="#">Mobil</a></li>
-											<li><a href="#">Sepeda Motor</a></li>
-											<li><a href="#">Pick Up</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li class="dropdown side-dropdown">
-							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Elektronik <i class="fa fa-angle-right"></i></a>
-							<div class="custom-menu" style ="width: 200px;">
-								<div class="row">
-									<div class="col-md-4" style ="width: 200px;">
-										<ul class="list-links">
-											<li><a href="#">Laptop</a></li>
-											<li><a href="#">Kamera</a></li>
-											<li><a href="#">Sound System</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li class="dropdown side-dropdown">
-							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Kebutuhan Pesta <i class="fa fa-angle-right"></i></a>
-							<div class="custom-menu" style ="width: 200px;">
-								<div class="row">
-									<div class="col-md-4" style ="width: 200px;">
-										<ul class="list-links">
-											<li><a href="#">Alat Pesta</a></li>
-											<li><a href="#">Gaun Pesta</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-						</li>
-					</ul>
-				</div>
-				<!-- /category nav -->
-
-				<!-- menu nav -->
-				<div class="menu-nav">
-					<span class="menu-header">Menu <i class="fa fa-bars"></i></span>
-					<ul class="menu-list">
-						<li><a href="/beranda">Beranda</a></li>
-						<li><a href="#">Kendaraan</a></li>
-						<li><a href="#">Elektronik</a></li>
-						<li><a href="#">Alat Pesta</a></li>
-						<li><a href="#">Tentang Kami</a></li>
-						<li class="dropdown default-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Lainnya <i class="fa fa-caret-down"></i></a>
-							<ul class="custom-menu">
-								<li><a href="product-page.html">Kritik & Saran</a></li>
-								<li><a href="product-page.html">Kebijakan & Privasi</a></li>
-								<li><a href="products.html">Bantuan</a></li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-				<!-- menu nav -->
-			</div>
-		</div>
-		<!-- /container -->
-	</div>
+	<!-- NAVIGATION -->
+	<div id="navigation"></div>
 	<!-- /NAVIGATION -->
-        @yield('content')
-    <!-- FOOTER -->
-	<footer id="footer" class="section section-grey">
-		<!-- container -->
-		<div class="container">
-			<!-- row -->
-			<div class="row">
-				<!-- footer widget -->
-				<div class="col-md-3 col-sm-6 col-xs-6">
-					<div class="footer">
-						<!-- footer logo -->
-						<div class="footer-logo">
-							<a class="logo" href="#">
-		            		<img src="{{ asset('img/logo.png') }}" alt="">
-		          			</a>
-						</div >
-						<!-- /footer logo -->
-
-						<p class="text-justify">Sewakuy adalah website penyewaan barang, bisa menyewakan barang ke orang lain dan bisa menyewa barang milik orang lain.</p>
-
-						<!-- footer social -->
-						<ul class="footer-social">
-							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-							<li><a href="#"><i class="fa fa-instagram"></i></a></li>
-							<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-							<li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-						</ul>
-						<!-- /footer social -->
-					</div>
-				</div>
-				<!-- /footer widget -->
-
-				<!-- footer widget -->
-				<div class="col-md-3 col-sm-6 col-xs-6" style="width:500px;">
-					
-				</div>
-				<!-- /footer widget -->
-
-				<div class="clearfix visible-sm visible-xs"></div>
-
-				<!-- footer widget -->
-				<div class="col-md-3 col-sm-6 col-xs-6">
-					<div class="footer">
-						<h3 class="footer-header">Layanan Pelanggan</h3>
-						<ul class="list-links">
-							<li><a href="#">Tentang Kami</a></li>
-							<li><a href="#">Kritik & Saran</a></li>
-							<li><a href="#">Kebijakan & Privasi</a></li>
-							<li><a href="#">Bantuan</a></li>
-						</ul>
-					</div>
-				</div>
-				<!-- /footer widget -->
-			</div>
-			<!-- /row -->
-			<hr>
-			<!-- row -->
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2 text-center">
-					<!-- footer copyright -->
-					<div class="footer-copyright">
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						Copyright &copy;<script>document.write(new Date().getFullYear());
-						</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-					</div>
-					<!-- /footer copyright -->
-				</div>
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</footer>
-	<!-- /FOOTER -->
+	@yield('content')
 </body>
 @else
+
 <body>
 	<!-- top Header -->
-		<div id="top-header">
-			<div class="container">
-				<div class="pull-left">
-					<span>Selamat datang di SewaKuy!</span>
-				</div>
-				<div class="pull-right">
-					<ul class="header-top-links">
-						<i class="fa fa-user-circle-o"></i>
-						<li class="dropdown default-dropdown">
-							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"> 
-								{{ Auth::user()->name }} <i class="fa fa-caret-down"></i>
-							</a>
-							<ul class="custom-menu text-center" >
-							<li><a href="{{ route('logout') }}"
-									onclick="event.preventDefault();
+	<div id="top-header">
+		<div class="container">
+			<div class="pull-left">
+				<span>Selamat datang di SewaKuy!</span>
+			</div>
+			<div class="pull-right">
+				<ul class="header-top-links">
+					<i class="fa fa-user-circle-o"></i>
+					<li class="dropdown default-dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+							{{ Auth::user()->name }} <i class="fa fa-caret-down"></i>
+						</a>
+						<ul class="custom-menu text-center">
+							<li><a href="{{ route('logout') }}" onclick="event.preventDefault();
 									document.getElementById('logout-form').submit();">
-								<button class="primary-btn" style="font-size: 11px; width: 200px;"><i class="fa fa-sign-out"></i> Logout</button>	
+									<button class="primary-btn" style="font-size: 11px; width: 200px;"><i class="fa fa-sign-out"></i> Logout</button>
 								</a>
-									<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        {{ csrf_field() }}
-                                    </form>
+								<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+									{{ csrf_field() }}
+								</form>
 							</li>
-							</ul>
-						</li>
-					</ul>
-				</div>
+						</ul>
+					</li>
+				</ul>
 			</div>
 		</div>
-		<!-- /top Header -->
+	</div>
+	<!-- /top Header -->
 	<!-- HEADER -->
 	<header>
 		<!-- header -->
@@ -284,7 +129,7 @@
 				<div class="pull-left">
 					<!-- Logo -->
 					<div class="header-logo">
-						<a class="logo" href="/beranda">
+						<a class="logo">
 							<img src="{{ asset('img/logo.png') }}" alt="">
 						</a>
 					</div>
@@ -292,15 +137,15 @@
 
 					<!-- Search -->
 					<div class="header-search">
-						<form>
-							<input class="input search-input" type="text" placeholder="Sewa barang yuk...">
-							<select class="input search-categories" style="width: 155px;">
+						<form action="/cari" method="GET">
+							<input class="input search-input" type="text" placeholder="Sewa barang yuk..." name="key">
+							<select class="input search-categories" style="width: 155px;" name="kategori">
 								<option value="0">Semua Kategori</option>
 								<option value="1">Kendaraan</option>
 								<option value="2">Elektronik</option>
 								<option value="3">Alat Pesta</option>
 							</select>
-							<button class="search-btn"><i class="fa fa-search"></i></button>
+							<button class="search-btn" type="submit"><i class="fa fa-search"></i></button>
 						</form>
 					</div>
 					<!-- /Search -->
@@ -313,7 +158,7 @@
 								<div class="header-btns-icon">
 									<i class="fa fa-plus"></i>
 								</div>
-							</a>	
+							</a>
 						</li>
 						<!-- Cart -->
 						<li class="header-cart dropdown default-dropdown text-center">
@@ -321,26 +166,32 @@
 								<span class="tooltipp">Pemberitahuan</span>
 								<div class="header-btns-icon">
 									<i class="fa fa-bell"></i>
-									<span class="qty">4</span>
+									@if($notif->count() != 0)
+									<span class="qty">{{$notif->count()}}</span>
+									@endif
 								</div>
 							</div>
 							<div class="custom-menu">
 								<div id="shopping-cart">
 									<div class="shopping-cart-list">
-										@for ($k = 1; $k <= 4; $k++)
+										@foreach($notif as $notifs)
 										<div class="product product-widget" style="width: 240px;">
+											@php
+											$gambar = IklanController::satuGambar($notifs->transaksi->iklan->id);
+											@endphp
 											<div class="product-thumb">
-												<img src="{{ asset("img/thumb-product0$k.jpg") }}" alt="">
+												<img src="/img/{{$gambar}}" alt="">
 											</div>
 											<div class="product-body">
-												<h2 class="product-name font-weak"><a href="#">
-													<p style="text-align: justify; font-size: 12px;">
-														Mr. X ingin menyewa barang anda. Silakan lanjutkan transaksi dengan Mr. X dengan menekan notifikasi ini. 
-													</p>
-												</a></h2>
+												<h2 class="product-name font-weak">
+													<a href="/sewa/persetujuan/{{$notifs->transaksi_id}}">
+														<p style="text-align: justify; font-size: 12px;">
+															{{$notifs->isi}}
+														</p>
+													</a></h2>
 											</div>
 										</div>
-										@endfor
+										@endforeach
 									</div>
 									<div class="shopping-cart-btns">
 										<button class="primary-btn" style="font-size: 11px; width: 200px;"><i class="fa fa-trash"></i> Bersihkan</button>
@@ -350,14 +201,14 @@
 						</li>
 						<!-- /Cart -->
 
-                        <!-- Account -->
+						<!-- Account -->
 						<li class="header-cart dropdown default-dropdown text-center">
 							<a href="#" class="dropdown-toggle">
 								<span class="tooltipp">Pesan</span>
 								<div class="header-btns-icon">
 									<span class="qty">3</span>
 									<i class="fa fa-comments-o"></i>
-								</div>	
+								</div>
 							</a>
 						</li>
 						<!-- /Account -->
@@ -375,13 +226,12 @@
 								<li><a href="/iklan/saya"><i class="fa fa-heart-o"></i> Iklan Saya</a></li>
 								<li><a href="/sewa/saya"><i class="fa fa-check"></i> Daftar Sewa</a></li>
 								<li><a href="#"><i class="fa fa-exchange"></i> Bandingkan</a></li>
-								<li><a href="{{ route('logout') }}"
-									onclick="event.preventDefault();
+								<li><a href="{{ route('logout') }}" onclick="event.preventDefault();
                                     document.getElementById('logout-form').submit();">
-								<i class="fa fa-sign-out"></i> Logout</a>
+										<i class="fa fa-sign-out"></i> Logout</a>
 									<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        {{ csrf_field() }}
-                                    </form>
+										{{ csrf_field() }}
+									</form>
 								</li>
 							</ul>
 						</li>
@@ -410,12 +260,12 @@
 				<div class="category-nav show-on-click">
 					<span class="category-header">Kategori <i class="fa fa-list"></i></span>
 					<ul class="category-list">
-					<li class="dropdown side-dropdown">
+						<li class="dropdown side-dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Kendaraan <i class="fa fa-angle-right"></i></a>
-							<div class="custom-menu" style ="width: 200px;">
+							<div class="custom-menu" style="width: 200px;">
 								<div class="row">
-									<div class="col-md-4" style ="width: 200px;">
-										<ul class="list-links" >
+									<div class="col-md-4" style="width: 200px;">
+										<ul class="list-links">
 											<li><a href="#">Mobil</a></li>
 											<li><a href="#">Sepeda Motor</a></li>
 											<li><a href="#">Pick Up</a></li>
@@ -426,9 +276,9 @@
 						</li>
 						<li class="dropdown side-dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Elektronik <i class="fa fa-angle-right"></i></a>
-							<div class="custom-menu" style ="width: 200px;">
+							<div class="custom-menu" style="width: 200px;">
 								<div class="row">
-									<div class="col-md-4" style ="width: 200px;">
+									<div class="col-md-4" style="width: 200px;">
 										<ul class="list-links">
 											<li><a href="#">Laptop</a></li>
 											<li><a href="#">Kamera</a></li>
@@ -440,9 +290,9 @@
 						</li>
 						<li class="dropdown side-dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Kebutuhan Pesta <i class="fa fa-angle-right"></i></a>
-							<div class="custom-menu" style ="width: 200px;">
+							<div class="custom-menu" style="width: 200px;">
 								<div class="row">
-									<div class="col-md-4" style ="width: 200px;">
+									<div class="col-md-4" style="width: 200px;">
 										<ul class="list-links">
 											<li><a href="#">Alat Pesta</a></li>
 											<li><a href="#">Gaun Pesta</a></li>
@@ -460,9 +310,9 @@
 					<span class="menu-header">Menu <i class="fa fa-bars"></i></span>
 					<ul class="menu-list">
 						<li><a href="/beranda">Beranda</a></li>
-						<li><a href="#">Kendaraan</a></li>
-						<li><a href="#">Elektronik</a></li>
-						<li><a href="#">Alat Pesta</a></li>
+						<li><a href="/home/Kendaraan">Kendaraan</a></li>
+						<li><a href="/home/Elektronik">Elektronik</a></li>
+						<li><a href="/home/Alat Pesta">Alat Pesta</a></li>
 						<li><a href="#">Tentang Kami</a></li>
 						<li class="dropdown default-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Lainnya <i class="fa fa-caret-down"></i></a>
 							<ul class="custom-menu">
@@ -479,7 +329,7 @@
 		<!-- /container -->
 	</div>
 	<!-- /NAVIGATION -->
-		@yield('content')
+	@yield('content')
 	<!-- FOOTER -->
 	<footer id="footer" class="section section-grey">
 		<!-- container -->
@@ -492,9 +342,9 @@
 						<!-- footer logo -->
 						<div class="footer-logo">
 							<a class="logo" href="#">
-		            <img src="{{ asset('img/logo.png') }}" alt="">
-		          </a>
-						</div >
+								<img src="{{ asset('img/logo.png') }}" alt="">
+							</a>
+						</div>
 						<!-- /footer logo -->
 
 						<p class="text-justify">Sewakuy adalah website penyewaan barang, bisa menyewakan barang ke orang lain dan bisa menyewa barang milik orang lain.</p>
@@ -550,7 +400,8 @@
 					<!-- footer copyright -->
 					<div class="footer-copyright">
 						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						Copyright &copy;<script>document.write(new Date().getFullYear());
+						Copyright &copy;<script>
+							document.write(new Date().getFullYear());
 						</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
 						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 					</div>
@@ -562,7 +413,7 @@
 		<!-- /container -->
 	</footer>
 	<!-- /FOOTER -->
-@endguest
+	@endguest
 	<!-- jQuery Plugins -->
 	<script src="{{ asset('js/jquery.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>

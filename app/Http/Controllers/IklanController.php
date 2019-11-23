@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Iklan;
 use App\Gambar;
 use App\Ulasan;
+use App\PelaporanIklan;
 
 class IklanController extends Controller
 {
@@ -14,11 +15,14 @@ class IklanController extends Controller
         $iklan = Iklan::find($id);
         $ulasan = Ulasan::where('iklan_id', $iklan->id)->paginate(3);
         $rata2Rating = $this->akumulasiRating($iklan->id);
-        if($id = Auth::id()){
-            return view('user.registered.detail_iklan_saya', compact('iklan', 'ulasan', 'rata2Rating'));
-        }else{
-            return view('user.registered.detail_iklan', compact('iklan', 'ulasan', 'rata2Rating'));
-        }
+        
+        return view('user.registered.detail_iklan', compact('iklan', 'ulasan', 'rata2Rating'));
+    }
+
+    public static function dataIklan($id)
+    {
+        $iklan = Iklan::find($id);
+        return $iklan;
     }
 
     public static function akumulasiRating($id){
@@ -43,12 +47,6 @@ class IklanController extends Controller
         $id = Auth::id();
         $iklan = Iklan::where('user_id', $id)->get();
         return view('user.registered.iklan_saya', compact('iklan'));
-    }
-
-    public function editIklan($id)
-    {
-        $iklan = Iklan::find($id);
-        return view('user.registered.edit_iklan', compact('iklan'));
     }
     
     public function buatIklan()
@@ -82,6 +80,12 @@ class IklanController extends Controller
 		return redirect('/iklan/saya');
 	}
 
+    public function editIklan($id)
+    {
+        $iklan = Iklan::find($id);
+        return view('user.registered.edit_iklan', compact('iklan'));
+    }
+
     public function prosesEditIklan(Request $request){
         $id = $request->iklan_id;
         Iklan::where('id', $id)->update([
@@ -105,6 +109,36 @@ class IklanController extends Controller
         return redirect('/iklan/saya');
     }
 
+    public function hapusIklan($id)
+    {
+        $iklan = Iklan::find($id);
+        $iklan->delete();
+        return redirect()->back();
+    }
+
+    public function laporkanIklan($id)
+    {
+        $iklan = Iklan::find($id);
+        return view('user.registered.laporkan_iklan', compact('iklan'));
+    }
+    
+    public function prosesLaporkanIklan(Request $request)
+    {
+        $id = Auth::id();
+        $alasan="";
+        foreach($request->alasan as $al){
+            $alasan = $alasan.$al.',';
+        } 
+        $lapor = PelaporanIklan::create([
+            'iklan_id' => $request->iklan_id,
+            'pelapor_id' => $id,
+            'alasan' => $alasan,
+            'keterangan' => $request->keterangan,
+        ]);
+        $iklan = Iklan::find($request->iklan_id);
+        return view('user.registered.invoice_pelaporan_iklan', compact('lapor', 'iklan'));
+    }
+
     public function hapusGambar($id)
     {
         $gambar = Gambar::find($id);
@@ -112,11 +146,16 @@ class IklanController extends Controller
         return redirect()->back();
     }
 
-    public function hapusIklan($id)
+    public static function satuGambar($id)
     {
-        $gambar = Iklan::find($id);
-        $gambar->delete();
-        return redirect()->back();
+        $gambar = Gambar::where('iklan_id', $id)->first();
+        if($gambar != null){
+            return $gambar['file'];
+        }
+        else{
+            return '1.jpg';
+        }
+        
     }
 
     public function tambahUlasan(Request $request, $id)

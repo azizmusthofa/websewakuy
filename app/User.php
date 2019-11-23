@@ -44,6 +44,30 @@ class User extends Authenticatable
         return $this->hasMany('App\Iklan');
 
     }
+
+    public function pelaporan(){
+
+        return $this->hasMany('App\PelaporanUser');
+
+    }
+
+    public function transaksi(){
+
+        return $this->hasMany('App\Transaksi');
+
+    }
+
+    public function notofikasi(){
+
+        return $this->hasMany('App\Notifikasi');
+
+    }
+
+    public function pesan(){
+
+        return $this->hasMany('App\Pesan');
+
+    }
     
      protected $casts = [
         'email_verified_at' => 'datetime',

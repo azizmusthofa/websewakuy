@@ -24,6 +24,16 @@ class Iklan extends Model
         return $this->hasMany('App\Ulasan');
     }
 
+    public function pelaporan(){
+        return $this->hasMany('App\PelaporanIklan');
+    }
+
+    public function transaksi(){
+
+        return $this->hasMany('App\Transaksi');
+
+    }
+
     public function getCreatedAtAttribute()
     {
         return \Carbon\Carbon::parse($this->attributes['created_at'])->format('d M Y H:i');
